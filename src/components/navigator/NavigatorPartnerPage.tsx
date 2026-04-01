@@ -64,7 +64,7 @@ export default function NavigatorPartnerPage() {
             <div className={styles.heroGlyph} aria-hidden>
               <Sparkles size={28} strokeWidth={2} />
             </div>
-            <h1 className={styles.title}>Navigator</h1>
+            <h1 className={styles.title}>Partner</h1>
             <p className={styles.subtitle}>
               Your AI partner for anything — live ops, building, localization, or studio workflow.
               Context: <strong>{selectedExperience.title}</strong> · {workspaceName}
