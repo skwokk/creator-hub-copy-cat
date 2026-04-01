@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Bell,
   Search,
@@ -39,6 +39,7 @@ import {
   Gamepad2,
   type LucideIcon,
 } from 'lucide-react';
+import CreatorAppBar from '../shared/CreatorAppBar';
 import styles from './HomeDashboard.module.css';
 import avatarImg from '../../assets/avatar.png';
 import riotfallImg from '../../assets/riotfall.png';
@@ -280,12 +281,11 @@ interface NavEntry {
   icon: LucideIcon;
   label: string;
   path?: string;
-  active?: boolean;
   badge?: string; // e.g. 'New'
 }
 
 const TOP_NAV: NavEntry[] = [
-  { icon: Home,          label: 'Home',      path: '/home', active: true },
+  { icon: Home,          label: 'Home',      path: '/home' },
   { icon: Folder,        label: 'Creations', path: '/creations' },
   { icon: BookOpen,      label: 'Learn' },
   { icon: ShoppingBag,   label: 'Store' },
@@ -305,7 +305,7 @@ const TOOLS_NAV: NavEntry[] = [
 
 const FOOTER_NAV: NavEntry[] = [
   { icon: Globe,   label: 'Roblox.com' },
-  { icon: Pencil,  label: 'Studio' },
+  { icon: Pencil,  label: 'Roblox Studio', path: '/studio' },
 ];
 
 // ─── ExploreCard ────────────────────────────────────────────────────────────────
@@ -378,6 +378,7 @@ function LearnCard({ type, url, thumbnail, title, description, duration, author,
 
 export default function HomeDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isUpdatesOpen, setIsUpdatesOpen] = useState(true);
   const [isAllToolsOpen, setIsAllToolsOpen] = useState(false);
   const [isNewUser, setIsNewUser] = useState(true);
@@ -455,6 +456,8 @@ export default function HomeDashboard() {
       className={styles.shell}
     >
 
+      <CreatorAppBar title="Creator Hub" />
+
       {/* ── Viewport ─────────────────────────────────────────────────── */}
       <div className={styles.viewport}>
 
@@ -483,10 +486,16 @@ export default function HomeDashboard() {
 
             {/* Top nav group */}
             <nav className={styles.navBody}>
-              {TOP_NAV.map(({ icon: Icon, label, path, active, badge }) => (
+              {TOP_NAV.map(({ icon: Icon, label, path, badge }) => (
                 <button
                   key={label}
-                  className={`${styles.navItem} ${active ? styles.navItemActive : ''}`}
+                  className={`${styles.navItem} ${
+                    path &&
+                    (location.pathname === path ||
+                      (path === '/home' && location.pathname === '/'))
+                      ? styles.navItemActive
+                      : ''
+                  }`}
                   onClick={() => path && navigate(path)}
                 >
                   <Icon size={16} className={styles.navItemIcon} />
@@ -528,8 +537,16 @@ export default function HomeDashboard() {
 
           {/* ─── Pinned footer ─────────────────────────────────────── */}
           <div className={styles.sidebarFooter}>
-            {FOOTER_NAV.map(({ icon: Icon, label }) => (
-              <button key={label} className={styles.navItem}>
+            {FOOTER_NAV.map(({ icon: Icon, label, path }) => (
+              <button
+                key={label}
+                className={`${styles.navItem} ${
+                  path === '/studio' && location.pathname.startsWith('/studio')
+                    ? styles.navItemActive
+                    : ''
+                }`}
+                onClick={() => path && navigate(path)}
+              >
                 <Icon size={16} className={styles.navItemIcon} />
                 <span className={styles.navItemLabel}>{label}</span>
               </button>

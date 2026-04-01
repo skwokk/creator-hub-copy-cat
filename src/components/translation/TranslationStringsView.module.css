@@ -11,40 +11,6 @@
   font-size: 14px;
 }
 
-/* ─── App Bar ────────────────────────────────────────────────────── */
-.appBar {
-  height: 40px;
-  background: var(--surface-0);
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--shift-300);
-  position: relative;
-}
-
-.trafficLights {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  position: absolute;
-  left: 16px;
-}
-.tl { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.tlClose  { background: #ff5f57; }
-.tlMin    { background: #febc2e; }
-.tlMax    { background: #28c840; }
-
-.appBarTitle {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--content-default);
-  white-space: nowrap;
-}
-
 /* ─── Viewport ───────────────────────────────────────────────────── */
 .viewport {
   flex: 1;

@@ -1,0 +1,584 @@
+/* Roblox Studio shell — Figma Creator-Notifications-2025 node 3613:308525 (Studio 2025) */
+
+.shell {
+  --studio-bg: #1f2126;
+  --studio-panel: #25272e;
+  --studio-raised: #2e3138;
+  --studio-border: rgba(208, 217, 251, 0.1);
+  --studio-text: #d5d7dd;
+  --studio-muted: #8a8e99;
+  --studio-emphasis: #f2f2f3;
+
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--studio-bg);
+  color: var(--studio-text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.toolbarPlatform {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  padding-right: 6px;
+}
+
+.hubBackBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--studio-text);
+  border-radius: 6px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-panel);
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.hubBackBtn:hover {
+  background: var(--studio-raised);
+  border-color: rgba(208, 217, 251, 0.18);
+}
+
+.docTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--studio-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: min(280px, 28vw);
+}
+
+.toolbarVertRule {
+  width: 1px;
+  align-self: center;
+  height: 24px;
+  background: var(--studio-border);
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.titleActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.titleBtn {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--studio-text);
+  border-radius: 4px;
+  border: 1px solid var(--studio-border);
+  background: transparent;
+  transition: background 0.12s;
+}
+
+.titleBtn:hover {
+  background: var(--studio-raised);
+}
+
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 4px 10px;
+  background: var(--studio-bg);
+  border-bottom: 1px solid var(--studio-border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* Collaborate / Share / profile — Figma ribbon row, right side (not app bar) */
+.toolbarRibbonEnd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+  padding-left: 8px;
+}
+
+.toolGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 10px;
+  border-right: 1px solid var(--studio-border);
+}
+
+.toolGroup:last-of-type {
+  border-right: none;
+}
+
+.toolIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  color: var(--studio-text);
+  transition: background 0.1s;
+}
+
+.toolIcon:hover {
+  background: var(--studio-raised);
+}
+
+.tabsRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.mainTab {
+  padding: 8px 14px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--studio-muted);
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  transition: color 0.12s, background 0.12s;
+}
+
+.mainTab:hover {
+  color: var(--studio-text);
+}
+
+.mainTabActive {
+  color: var(--studio-emphasis);
+  background: var(--studio-panel);
+  box-shadow: 0 1px 0 var(--studio-panel);
+}
+
+.mainTabAdd {
+  padding: 8px 10px;
+  color: var(--studio-muted);
+  border-radius: 4px;
+}
+
+.mainTabAdd:hover {
+  background: var(--studio-raised);
+  color: var(--studio-text);
+}
+
+.ribbonRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--studio-panel);
+  border-bottom: 1px solid var(--studio-border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.ribbonBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  color: var(--studio-text);
+}
+
+.ribbonBtn:hover {
+  background: var(--studio-raised);
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.toolbox {
+  width: 268px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  background: var(--studio-panel);
+  border-right: 1px solid var(--studio-border);
+  flex-shrink: 0;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--studio-emphasis);
+  border-bottom: 1px solid var(--studio-border);
+}
+
+.panelHeaderActions {
+  display: flex;
+  gap: 4px;
+}
+
+.searchRow {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--studio-border);
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  background: var(--studio-bg);
+  border: 1px solid var(--studio-border);
+  border-radius: 6px;
+  color: var(--studio-muted);
+}
+
+.searchField input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--studio-emphasis);
+  font-size: 12px;
+  outline: none;
+}
+
+.searchField input::placeholder {
+  color: var(--studio-muted);
+}
+
+.categoryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 10px 8px;
+}
+
+.catPill {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--studio-muted);
+  background: var(--studio-bg);
+  border: 1px solid var(--studio-border);
+  border-radius: 999px;
+}
+
+.catPillActive {
+  color: var(--studio-bg);
+  background: var(--studio-emphasis);
+  border-color: var(--studio-emphasis);
+}
+
+.toolboxGrid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  align-content: start;
+}
+
+.toolboxTile {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: var(--studio-bg);
+  border: 1px solid var(--studio-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  cursor: default;
+  transition: border-color 0.12s;
+}
+
+.toolboxTile:hover {
+  border-color: rgba(208, 217, 251, 0.22);
+}
+
+.tileThumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #3d4450, #2a2e36);
+  border: 1px solid var(--studio-border);
+}
+
+.tileLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--studio-muted);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.centerCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--studio-bg);
+}
+
+.viewportTabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 0 8px;
+  background: var(--studio-bg);
+  border-bottom: 1px solid var(--studio-border);
+  flex-shrink: 0;
+}
+
+.vpTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--studio-muted);
+  background: var(--studio-panel);
+  border-radius: 6px 6px 0 0;
+  margin-top: 4px;
+}
+
+.vpTabActive {
+  color: var(--studio-emphasis);
+  background: #353942;
+}
+
+.vpTabClose {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.5;
+  padding: 0 2px;
+}
+
+.viewport3d {
+  flex: 1;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #6b7a8f 0%, #8a9aaf 35%, #c5ccd6 100%);
+}
+
+.viewportGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  transform: perspective(400px) rotateX(58deg) scale(2.2);
+  transform-origin: center 65%;
+  opacity: 0.35;
+}
+
+.viewportPlatform {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(180deg, #f5f5f7 0%, #d8dade 100%);
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.platformGlyph {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #2a2a2a, #0d0d0d);
+  border: 3px solid #1a1a1a;
+}
+
+.assetManager {
+  height: 200px;
+  min-height: 140px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--studio-border);
+  background: var(--studio-panel);
+}
+
+.amHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--studio-border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--studio-emphasis);
+}
+
+.amBody {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.amTree {
+  width: 42%;
+  min-width: 160px;
+  border-right: 1px solid var(--studio-border);
+  overflow-y: auto;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+.treeLine {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 4px;
+  border-radius: 3px;
+  color: var(--studio-text);
+}
+
+.treeLine:hover {
+  background: var(--studio-raised);
+}
+
+.treeIndent {
+  padding-left: 14px;
+}
+
+.amTable {
+  flex: 1;
+  overflow: auto;
+  font-size: 11px;
+}
+
+.tableHead {
+  display: grid;
+  grid-template-columns: 1.2fr 0.5fr 0.7fr 1fr;
+  gap: 8px;
+  padding: 6px 10px;
+  font-weight: 700;
+  color: var(--studio-muted);
+  border-bottom: 1px solid var(--studio-border);
+  position: sticky;
+  top: 0;
+  background: var(--studio-panel);
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 1.2fr 0.5fr 0.7fr 1fr;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(208, 217, 251, 0.06);
+}
+
+.tableRow:hover {
+  background: var(--studio-raised);
+}
+
+.rightCol {
+  width: 292px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  background: var(--studio-panel);
+  border-left: 1px solid var(--studio-border);
+  flex-shrink: 0;
+}
+
+.explorer {
+  flex: 1;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--studio-border);
+  overflow: hidden;
+}
+
+.explorerScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+.properties {
+  height: 220px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.propScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px;
+}
+
+.propRow {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(208, 217, 251, 0.06);
+  font-size: 11px;
+}
+
+.propLabel {
+  color: var(--studio-muted);
+  font-weight: 600;
+}
+
+.propInput {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 4px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-bg);
+  color: var(--studio-text);
+  font-size: 11px;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  color: var(--studio-muted);
+}
+
+.iconBtn:hover {
+  background: var(--studio-raised);
+  color: var(--studio-text);
+}

@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Home, Folder, BookOpen, ShoppingBag, MessageCircle, BellRing,
   DollarSign, BarChart2, Megaphone, LayoutGrid, Globe, Pencil,
   ChevronDown, PanelLeftClose, AlertTriangle, ExternalLink,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import CreatorAppBar from '../shared/CreatorAppBar';
 import styles from './CreationsDashboard.module.css';
 import tiltSvg from '../../assets/tilt.svg';
 import avatarImg from '../../assets/avatar.png';
@@ -30,7 +31,7 @@ const MID_NAV:   NavEntry[] = [
 const TOOLS_NAV: NavEntry[] = [{ icon: LayoutGrid, label: 'All tools' }];
 const FOOTER_NAV: NavEntry[] = [
   { icon: Globe,  label: 'Roblox.com' },
-  { icon: Pencil, label: 'Studio' },
+  { icon: Pencil, label: 'Roblox Studio', path: '/studio' },
 ];
 
 // ─── Experience mock data ──────────────────────────────────────────────────
@@ -63,6 +64,7 @@ const EXPERIENCES: Experience[] = [
 
 export default function CreationsDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Tab & filter state
   const [activeTab, setActiveTab] = useState<'experiences' | 'sharelinks' | 'avatar' | 'dev'>('experiences');
@@ -81,6 +83,7 @@ export default function CreationsDashboard() {
 
   return (
     <div className={styles.shell}>
+      <CreatorAppBar title="Creator Hub" />
       <div className={styles.viewport}>
 
         {/* ── Sidebar (identical to HomeDashboard) ────────────────── */}
@@ -101,7 +104,9 @@ export default function CreationsDashboard() {
               {TOP_NAV.map(({ icon: Icon, label, path, badge }) => (
                 <button
                   key={label}
-                  className={`${styles.navItem} ${path === '/creations' ? styles.navItemActive : ''}`}
+                  className={`${styles.navItem} ${
+                    path && location.pathname === path ? styles.navItemActive : ''
+                  }`}
                   onClick={() => path && navigate(path)}
                 >
                   <Icon size={16} className={styles.navItemIcon} />
@@ -131,8 +136,16 @@ export default function CreationsDashboard() {
           </div>
 
           <div className={styles.sidebarFooter}>
-            {FOOTER_NAV.map(({ icon: Icon, label }) => (
-              <button key={label} className={styles.navItem}>
+            {FOOTER_NAV.map(({ icon: Icon, label, path }) => (
+              <button
+                key={label}
+                className={`${styles.navItem} ${
+                  path === '/studio' && location.pathname.startsWith('/studio')
+                    ? styles.navItemActive
+                    : ''
+                }`}
+                onClick={() => path && navigate(path)}
+              >
                 <Icon size={16} className={styles.navItemIcon} />
                 <span className={styles.navItemLabel}>{label}</span>
               </button>

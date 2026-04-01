@@ -7,45 +7,6 @@
   overflow: hidden;
 }
 
-/* ── App Bar ─────────────────────────────────────────────────────── */
-.appBar {
-  height: 40px;
-  min-height: 40px;
-  background: var(--surface-0);
-  border-bottom: 1px solid var(--shift-300);
-  /* 3-column grid: traffic lights | title (auto/centered) | spacer */
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
-
-.trafficLights {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  /* column 1 — stays left-aligned */
-}
-
-.tl {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-full);
-}
-
-.tlClose  { background: #ff5f57; }
-.tlMin    { background: #febc2e; }
-.tlMax    { background: #28c840; }
-
-/* column 2 — mathematically centered regardless of flanking content */
-.appBarTitle {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--content-default);
-  white-space: nowrap;
-  text-align: center;
-}
-
 /* ── Viewport ────────────────────────────────────────────────────── */
 .viewport {
   display: flex;

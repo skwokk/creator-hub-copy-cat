@@ -6,6 +6,7 @@ import ImageTranslationV3 from './components/translation/ImageTranslationV3';
 import HomeDashboard from './components/home/HomeDashboard';
 import ExperienceOverview from './components/experience/ExperienceOverview';
 import CreationsDashboard from './components/creations/CreationsDashboard';
+import StudioPlatformPage from './components/studio/StudioPlatformPage';
 
 function GlossaryRoot() {
   const flow = useGlossaryFlow();
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/localization" element={<GlossaryRoot />} />
         <Route path="/translate" element={<TranslationStringsView />} />
         <Route path="/translate-v3" element={<ImageTranslationV3 />} />
+        <Route path="/studio" element={<StudioPlatformPage />} />
       </Routes>
     </BrowserRouter>
   );

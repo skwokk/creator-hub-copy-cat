@@ -29,6 +29,7 @@ import {
   ImageUp,
 } from 'lucide-react';
 import IconRail from '../shared/IconRail';
+import CreatorAppBar from '../shared/CreatorAppBar';
 import styles from './TranslationStringsView.module.css';
 import avatarImg from '../../assets/avatar.png';
 import sonicEnImg from '../../assets/sonic_en.png';
@@ -1412,15 +1413,7 @@ export default function TranslationStringsView() {
     <>
     <div className={styles.shell}>
 
-      {/* ── App Bar ──────────────────────────────────────────────── */}
-      <div className={styles.appBar}>
-        <div className={styles.trafficLights}>
-          <span className={`${styles.tl} ${styles.tlClose}`} />
-          <span className={`${styles.tl} ${styles.tlMin}`} />
-          <span className={`${styles.tl} ${styles.tlMax}`} />
-        </div>
-        <span className={styles.appBarTitle}>Creator Hub</span>
-      </div>
+      <CreatorAppBar title="Creator Hub" />
 
       {/* ── Viewport ─────────────────────────────────────────────── */}
       <div className={styles.viewport}>
