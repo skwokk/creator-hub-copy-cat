@@ -2,7 +2,8 @@
 .shell {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  flex: 1;
+  min-height: 0;
   background: var(--surface-0);
   overflow: hidden;
 }
@@ -16,8 +17,8 @@
 
 /* ── Sidebar ─────────────────────────────────────────────────────── */
 .sidebar {
-  width: 288px;
-  min-width: 288px;
+  width: 216px;
+  min-width: 216px;
   display: flex;
   background: var(--surface-0);
   border-right: 1px solid var(--shift-300);

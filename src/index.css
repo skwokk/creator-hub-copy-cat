@@ -19,6 +19,19 @@
   --accent: #335fff;
   --accent-hover: #4470ff;
 
+  /* Creator OS — agentic / live ops layer */
+  --os-bg: #0c0c0f;
+  --os-surface-1: #141418;
+  --os-rail-bg: #101014;
+  --os-copilot-bg: #0f0f13;
+  --os-edge: rgba(208, 217, 251, 0.1);
+  --os-hover: rgba(208, 217, 251, 0.06);
+  --os-bubble-agent: rgba(208, 217, 251, 0.04);
+  --os-aurora-mid: #a5b4fc;
+  --os-signal-warm: #fbbf24;
+  --studio-bg: #1f2126;
+  --studio-text: #d5d7dd;
+
   /* Status */
   --status-badge: #335fff;
 

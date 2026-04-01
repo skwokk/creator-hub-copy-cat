@@ -1,7 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
    Experience Overview — CSS Module
-   Shell mirrors GlossaryView exactly:
-     Sidebar 288px = IconRail 72px + navTree 216px
+   Shell: sidebar 216px nav tree; primary OS rail lives in AgentShell.
      Header 72px, padding 0 32px
      Body padding 32px
    CSS variable references match the same design tokens used in
@@ -12,7 +11,8 @@
 .shell {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  flex: 1;
+  min-height: 0;
   background: var(--surface-0);
   overflow: hidden;
   font-family: 'Builder Sans', system-ui, sans-serif;
@@ -20,22 +20,12 @@
   color: var(--content-default);
 }
 
-/* ── Viewport ────────────────────────────────────────────────────────── */
+/* ── Viewport — full width; game nav is AgentShell sub-rail ───────────── */
 .viewport {
   display: flex;
   flex: 1;
   overflow: hidden;
-}
-
-/* ── Sidebar: 288px = 72px rail + 216px navTree ───────────────────────── */
-.sidebar {
-  width: 288px;
-  min-width: 288px;
-  display: flex;
-  background: var(--surface-0);
-  border-right: 1px solid var(--shift-300);
-  overflow-y: auto;
-  flex-shrink: 0;
+  min-width: 0;
 }
 
 /* ── Nav tree (216px, flex: 1) ───────────────────────────────────────── */
@@ -129,6 +119,7 @@
   flex-direction: column;
   overflow: hidden;
   min-width: 0;
+  width: 100%;
 }
 
 /* ── Header Bar — exact match to GlossaryView ──────────────────────────── */

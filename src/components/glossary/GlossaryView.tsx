@@ -16,8 +16,7 @@ import type { GlossaryFlowState, GlossaryFlowActions } from '../../hooks/useGlos
 import GlossaryTable from './GlossaryTable';
 import CreateRulePanel from './CreateRulePanel';
 import DeleteRuleModal from './DeleteRuleModal';
-import IconRail from '../shared/IconRail';
-import CreatorAppBar from '../shared/CreatorAppBar';
+import AgentShell from '../shell/AgentShell';
 import styles from './GlossaryView.module.css';
 import avatarImg from '../../assets/avatar.png';
 import translateIcon from '../../assets/translate_icon.svg';
@@ -207,16 +206,13 @@ export default function GlossaryView({
     : rules;
 
   return (
+    <AgentShell>
     <div className={styles.shell}>
-      <CreatorAppBar title="Creator Hub" />
 
       {/* ── Viewport ─────────────────────────────────────────── */}
       <div className={styles.viewport}>
         {/* ── Sidebar ──────────────────────────────────────── */}
         <div className={styles.sidebar}>
-          {/* Shared icon rail */}
-          <IconRail />
-
           {/* Nav Tree */}
           <div className={styles.navTree}>
             <div className={styles.navBack} onClick={() => navigate('/experience/overview')}>
@@ -652,5 +648,6 @@ export default function GlossaryView({
         </div>
       )}
     </div>
+    </AgentShell>
   );
 }

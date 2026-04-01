@@ -7,6 +7,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import AgentShell from '../shell/AgentShell';
 import sonicEnImg from '../../assets/sonic_en.png';
 import TranslationEditorModal, {
   type TextStyle as AppliedStyle,
@@ -30,10 +31,11 @@ export default function ImageTranslationV3() {
   const hasTranslation = appliedStyle !== null;
 
   return (
-    <div className="min-h-screen bg-[#0e0e0f] text-white flex flex-col">
+    <AgentShell>
+    <div className="min-h-0 flex-1 bg-[#0e0e0f] text-white flex flex-col">
 
-      {/* ── Top Bar ───────────────────────────────────────────────────────── */}
-      <header className="shrink-0 h-14 flex items-center gap-3 px-6 border-b border-[#2a2a2a] bg-[#111111]">
+      {/* ── Context bar (under OS chrome) ───────────────────────────────────── */}
+      <header className="shrink-0 h-12 flex items-center gap-3 px-6 border-b border-[#2a2a2a] bg-[#111111]">
         <button
           className="flex items-center gap-1.5 text-xs text-[#6b7280] hover:text-white transition-colors"
           onClick={() => navigate(-1)}
@@ -42,15 +44,15 @@ export default function ImageTranslationV3() {
           Back
         </button>
         <div className="w-px h-4 bg-[#2a2a2a]" />
-        <Languages size={15} className="text-[#335fff]" />
-        <span className="text-sm font-semibold text-white">Image Translation</span>
-        <span className="ml-1 px-1.5 py-0.5 text-[10px] font-bold bg-[#335fff]/20 text-[#335fff] rounded uppercase tracking-wider">
-          v3
+        <Languages size={15} className="text-[#a5b4fc]" />
+        <span className="text-sm font-semibold text-white">Vision pipeline</span>
+        <span className="ml-1 px-1.5 py-0.5 text-[10px] font-bold bg-[#6366f1]/25 text-[#c4b5fd] rounded uppercase tracking-wider">
+          Agent
         </span>
       </header>
 
       {/* ── Page Body ─────────────────────────────────────────────────────── */}
-      <main className="flex-1 flex flex-col items-center justify-center p-8 gap-8">
+      <main className="flex-1 flex flex-col items-center justify-center p-8 gap-8 min-h-0 overflow-y-auto">
 
         {/* ── Title block ─────────────────────────────────────────────── */}
         <div className="text-center max-w-xl">
@@ -188,5 +190,6 @@ export default function ImageTranslationV3() {
       />
 
     </div>
+    </AgentShell>
   );
 }

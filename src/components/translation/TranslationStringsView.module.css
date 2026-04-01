@@ -3,7 +3,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  flex: 1;
+  min-height: 0;
   background: var(--surface-0);
   color: var(--content-default);
   font-family: 'Builder Sans', system-ui, sans-serif;
@@ -21,8 +22,8 @@
 
 /* ─── Sidebar: icon rail (72px) + language subnavigation (215px) ─── */
 .sidebar {
-  width: 288px;   /* 72 + 1 border + 215 = 288 */
-  min-width: 288px;
+  width: 216px;
+  min-width: 216px;
   display: flex;
   flex-shrink: 0;
   background: var(--surface-0);   /* #121215 — same token as Glossary sidebar */

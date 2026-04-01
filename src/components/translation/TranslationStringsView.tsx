@@ -28,8 +28,7 @@ import {
   FileEdit,
   ImageUp,
 } from 'lucide-react';
-import IconRail from '../shared/IconRail';
-import CreatorAppBar from '../shared/CreatorAppBar';
+import AgentShell from '../shell/AgentShell';
 import styles from './TranslationStringsView.module.css';
 import avatarImg from '../../assets/avatar.png';
 import sonicEnImg from '../../assets/sonic_en.png';
@@ -1410,18 +1409,15 @@ export default function TranslationStringsView() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
+    <AgentShell>
     <>
     <div className={styles.shell}>
-
-      <CreatorAppBar title="Creator Hub" />
 
       {/* ── Viewport ─────────────────────────────────────────────── */}
       <div className={styles.viewport}>
 
-        {/* ── Sidebar: icon rail + language panel ────────────────── */}
+        {/* ── Sidebar: language panel ────────────────── */}
         <div className={styles.sidebar}>
-          <IconRail />
-
           <div className={styles.langPanel}>
             <div className={styles.langBack}>
               <ArrowLeft size={14} />
@@ -1995,5 +1991,6 @@ export default function TranslationStringsView() {
     )}
 
     </>
+    </AgentShell>
   );
 }
