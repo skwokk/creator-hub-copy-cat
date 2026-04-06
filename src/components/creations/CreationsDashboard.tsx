@@ -97,7 +97,7 @@ export default function CreationsDashboard() {
               keeps context on this title and your workspace.
             </p>
           </div>
-          <button type="button" className={styles.aiBandBtn} onClick={() => navigate('/navigator')}>
+          <button type="button" className={styles.aiBandBtn} onClick={() => navigate('/home#live-navigator')}>
             Open Navigator
             <ChevronRight size={16} aria-hidden />
           </button>

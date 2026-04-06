@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Search,
   Settings,
@@ -23,6 +24,9 @@ import {
   AlertCircle,
   Wand2,
   Film,
+  CheckCircle2,
+  Loader2,
+  X,
 } from 'lucide-react';
 import { useWorkspace } from '../../context/WorkspaceContext';
 import AgentShell from '../shell/AgentShell';
@@ -43,17 +47,58 @@ type StudioMode = 'edit' | 'playtest' | 'simulate';
 /**
  * Roblox Studio shell — Edit, Playtest, or Simulate (AI outcome preview).
  */
+const PUBLISH_CHECKS = [
+  'Scripts & workspace lint',
+  'Asset privacy & permissions',
+  'Experience policy & text safety',
+  'Live telemetry hooks (Sector B)',
+] as const;
+
+/** Fantasy valley / peaks — reads as in-game skybox */
+const FANTASY_PLAYTEST_BG =
+  'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=80';
+
+const PLAYTEST_NPC_FIXES = [
+  { id: 'vo', title: 'Shorten guard VO', hint: 'Two lines, faster beat to the objective' },
+  { id: 'skip', title: 'Soft skip + telemetry', hint: 'For repeats; log player choice' },
+  { id: 'holo', title: 'Hologram guide stub', hint: 'Navigator draft + beacon' },
+] as const;
+
+function GateGuardNpc() {
+  return (
+    <svg className={styles.npcSvg} viewBox="0 0 72 88" aria-hidden>
+      <ellipse cx="36" cy="78" rx="26" ry="9" fill="rgba(0,0,0,0.4)" />
+      <path d="M18 82 L36 24 L54 82 Z" fill="#3730a3" />
+      <rect x="24" y="32" width="24" height="36" rx="5" fill="#6366f1" />
+      <rect x="28" y="38" width="6" height="22" rx="1" fill="#4f46e5" />
+      <rect x="38" y="38" width="6" height="22" rx="1" fill="#4f46e5" />
+      <circle cx="36" cy="20" r="16" fill="#312e81" />
+      <circle cx="36" cy="20" r="10" fill="#818cf8" />
+      <rect x="28" y="15" width="16" height="6" rx="2" fill="#22d3ee" opacity="0.95" />
+      <rect x="30" y="48" width="12" height="3" rx="1" fill="#c4b5fd" opacity="0.6" />
+    </svg>
+  );
+}
+
 export default function StudioPlatformPage() {
+  const navigate = useNavigate();
   const { selectedExperience } = useWorkspace();
   const [studioMode, setStudioMode] = useState<StudioMode>('playtest');
   const [mainTab, setMainTab] = useState<string>('Home');
   const [cat, setCat] = useState<string>('Vehicle');
-  const [publishFlash, setPublishFlash] = useState(false);
   /** What to ask the AI to build (Simulate tab) */
   const [simBuildBrief, setSimBuildBrief] = useState('');
   /** Scenario / balance notes layered on top of the build ask */
   const [simScenario, setSimScenario] = useState('');
   const [simPreviewReady, setSimPreviewReady] = useState(false);
+  const [demoCollab, setDemoCollab] = useState(false);
+  const [worldFixMenuOpen, setWorldFixMenuOpen] = useState(false);
+  const [appliedWorldFixes, setAppliedWorldFixes] = useState<Record<string, boolean>>({});
+  const [publishModalOpen, setPublishModalOpen] = useState(false);
+  const [publishCheckDone, setPublishCheckDone] = useState(0);
+  const [publishChecksRunning, setPublishChecksRunning] = useState(false);
+  const [publishChecksComplete, setPublishChecksComplete] = useState(false);
+  const [publishSubmitting, setPublishSubmitting] = useState(false);
 
   const isPlaytest = studioMode === 'playtest';
   const isSimulate = studioMode === 'simulate';
@@ -66,39 +111,80 @@ export default function StudioPlatformPage() {
     setSimPreviewReady(true);
   };
 
-  const runPublish = () => {
-    setPublishFlash(true);
-    window.setTimeout(() => setPublishFlash(false), 4000);
-  };
+  const openPublishModal = useCallback(() => {
+    setPublishModalOpen(true);
+    setPublishCheckDone(0);
+    setPublishChecksComplete(false);
+    setPublishChecksRunning(true);
+    setPublishSubmitting(false);
+  }, []);
+
+  const closePublishModal = useCallback(() => {
+    if (publishSubmitting) return;
+    setPublishModalOpen(false);
+    setPublishChecksRunning(false);
+  }, [publishSubmitting]);
+
+  useEffect(() => {
+    if (!publishModalOpen || !publishChecksRunning || publishChecksComplete) return;
+    if (publishCheckDone >= PUBLISH_CHECKS.length) {
+      setPublishChecksComplete(true);
+      setPublishChecksRunning(false);
+      return;
+    }
+    const t = window.setTimeout(() => {
+      setPublishCheckDone((n) => n + 1);
+    }, 700);
+    return () => clearTimeout(t);
+  }, [publishModalOpen, publishChecksRunning, publishChecksComplete, publishCheckDone]);
+
+  const confirmPublish = useCallback(() => {
+    if (!publishChecksComplete || publishSubmitting) return;
+    setPublishSubmitting(true);
+    window.setTimeout(() => {
+      setPublishModalOpen(false);
+      setPublishSubmitting(false);
+      navigate('/home');
+    }, 1400);
+  }, [publishChecksComplete, publishSubmitting, navigate]);
+
+  useEffect(() => {
+    if (typeof sessionStorage === 'undefined') return;
+    if (sessionStorage.getItem('demoStudioCollab') === '1') {
+      sessionStorage.removeItem('demoStudioCollab');
+      setDemoCollab(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!worldFixMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setWorldFixMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [worldFixMenuOpen]);
 
   return (
     <AgentShell
       chrome="studio"
       barTitle={barTitle}
+      copilotDemoBuild={demoCollab}
     >
     <div
       className={`${styles.shell} ${isPlaytest ? styles.shellPlaytest : ''} ${isSimulate ? styles.shellSimulate : ''}`}
     >
       <div className={styles.sessionBanner}>
-        {publishFlash ? (
-          <span className={styles.publishFlash} role="status">
-            <Rocket size={14} aria-hidden />
-            Publish queued — staging build for <strong>{selectedExperience.title}</strong> (prototype)
-          </span>
-        ) : (
-          <>
-            <span className={styles.sessionBadge}>
-              {isPlaytest ? 'Playtest' : isSimulate ? 'Simulate' : 'Edit'}
-            </span>
-            <span className={styles.sessionText}>
-              {isPlaytest
-                ? 'Running as players see it · Click in-world to pin issues · Your AI partner drafts fixes'
-                : isSimulate
-                  ? 'Tell your AI partner what to build, review generated outcomes, and watch a prototype simulation clip before you ship'
-                  : 'Full Studio layout — use Playtest first, then Simulate or Edit'}
-            </span>
-          </>
-        )}
+        <span className={styles.sessionBadge}>
+          {isPlaytest ? 'Playtest' : isSimulate ? 'Simulate' : 'Edit'}
+        </span>
+        <span className={styles.sessionText}>
+          {isPlaytest
+            ? 'Running as players see it · Click in-world to pin issues · Navigator drafts fixes in the side panel'
+            : isSimulate
+              ? 'Tell Navigator what to build, review generated outcomes, and watch a prototype simulation clip before you ship'
+              : 'Full Studio layout — use Playtest first, then Simulate or Edit'}
+        </span>
       </div>
       <div className={styles.toolbarRow}>
         <div className={styles.toolbarPlatform}>
@@ -131,7 +217,7 @@ export default function StudioPlatformPage() {
               Edit
             </button>
           </div>
-          <button type="button" className={styles.publishBtn} onClick={runPublish}>
+          <button type="button" className={styles.publishBtn} onClick={openPublishModal}>
             <Rocket size={14} aria-hidden />
             Publish &amp; deploy
           </button>
@@ -241,10 +327,10 @@ export default function StudioPlatformPage() {
               <div className={styles.simulateHeader}>
                 <Wand2 size={18} aria-hidden />
                 <span>Simulate · build &amp; forecast</span>
-                <span className={styles.simulateBadge}>AI partner</span>
+                <span className={styles.simulateBadge}>Navigator</span>
               </div>
               <p className={styles.simulateLede}>
-                In plain language, tell your <strong>AI partner</strong> what to build or change for{' '}
+                In plain language, tell <strong>Navigator</strong> what to build or change for{' '}
                 <strong>{selectedExperience.title}</strong>. You’ll get a generated outcome readout and a
                 short simulation clip (prototype) before touching Edit or Publish.
               </p>
@@ -332,7 +418,7 @@ export default function StudioPlatformPage() {
                       <div className={styles.outcomeIcon} aria-hidden>
                         <Sparkles size={16} />
                       </div>
-                      <div className={styles.outcomeTitle}>Partner recommendation</div>
+                      <div className={styles.outcomeTitle}>Navigator recommendation</div>
                       <div className={styles.outcomeValue}>Ship to 5% canary</div>
                       <div className={styles.outcomeNote}>
                         Roll out behind flag <code className={styles.codeInline}>exp_sector_b_v2</code>
@@ -384,14 +470,87 @@ export default function StudioPlatformPage() {
                   </div>
                 </div>
               )}
-              <div className={`${styles.viewport3d} ${isPlaytest ? styles.viewport3dPlaytest : ''}`}>
+              <div
+                className={`${styles.viewport3d} ${isPlaytest ? styles.viewport3dPlaytest : ''}`}
+                onClick={isPlaytest ? () => setWorldFixMenuOpen(false) : undefined}
+              >
+                {isPlaytest ? (
+                  <>
+                    <div
+                      className={styles.viewportPhotoBg}
+                      style={{ backgroundImage: `url(${FANTASY_PLAYTEST_BG})` }}
+                      aria-hidden
+                    />
+                    <div className={styles.viewportFantasyMist} aria-hidden />
+                  </>
+                ) : null}
                 <div className={styles.viewportGrid} aria-hidden="true" />
-                <div className={styles.viewportPlatform} aria-hidden="true">
-                  <div className={styles.platformGlyph} />
-                </div>
-                <div className={styles.viewportPinRing} aria-hidden="true" />
+                {isPlaytest ? (
+                  <div className={styles.viewportActorStack} onClick={(e) => e.stopPropagation()}>
+                    <div className={styles.viewportPinRing} aria-hidden />
+                    <button
+                      type="button"
+                      className={styles.viewportWorldNpc}
+                      onClick={() => setWorldFixMenuOpen((o) => !o)}
+                      aria-expanded={worldFixMenuOpen}
+                      aria-haspopup="dialog"
+                      aria-label="Gate guard NPC — open Navigator fix menu"
+                    >
+                      <GateGuardNpc />
+                    </button>
+                    {worldFixMenuOpen ? (
+                      <div
+                        className={styles.viewportFixMenu}
+                        role="dialog"
+                        aria-label="Recommended fixes"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className={styles.viewportFixMenuHead}>Navigator · this object</div>
+                        <p className={styles.viewportFixMenuSub}>
+                          Recommended changes — Yes queues a patch (prototype)
+                        </p>
+                        <ul className={styles.viewportFixList}>
+                          {PLAYTEST_NPC_FIXES.map((f) => (
+                            <li key={f.id} className={styles.viewportFixRow}>
+                              <div className={styles.viewportFixCopy}>
+                                <span className={styles.viewportFixName}>{f.title}</span>
+                                <span className={styles.viewportFixHint}>{f.hint}</span>
+                              </div>
+                              <button
+                                type="button"
+                                className={styles.viewportFixYes}
+                                disabled={appliedWorldFixes[f.id]}
+                                onClick={() =>
+                                  setAppliedWorldFixes((p) => ({ ...p, [f.id]: true }))
+                                }
+                              >
+                                {appliedWorldFixes[f.id] ? (
+                                  <>
+                                    <CheckCircle2 size={14} aria-hidden />
+                                    Applied
+                                  </>
+                                ) : (
+                                  'Yes'
+                                )}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : (
+                  <>
+                    <div className={styles.viewportPlatform} aria-hidden="true">
+                      <div className={styles.platformGlyph} />
+                    </div>
+                    <div className={styles.viewportPinRing} aria-hidden="true" />
+                  </>
+                )}
                 <div className={styles.viewportPinHud} role="status">
-                  Pin mode · click in-world to attach a fix · Partner listens
+                  {isPlaytest
+                    ? 'Click the guard · Navigator menu · empty space closes menu'
+                    : 'Pin mode · click in-world to attach a fix · Navigator listens'}
                 </div>
               </div>
               {isEdit && (
@@ -506,6 +665,90 @@ export default function StudioPlatformPage() {
           </div>
         </aside>
       </div>
+      {publishModalOpen ? (
+        <div className={styles.publishModalRoot} role="presentation">
+          <button
+            type="button"
+            className={styles.publishModalBackdrop}
+            aria-label="Close publish dialog"
+            onClick={closePublishModal}
+          />
+          <div
+            className={styles.publishModal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="publish-modal-title"
+          >
+            <div className={styles.publishModalHead}>
+              <h2 id="publish-modal-title" className={styles.publishModalTitle}>
+                Publish &amp; deploy
+              </h2>
+              <button
+                type="button"
+                className={styles.publishModalClose}
+                onClick={closePublishModal}
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <p className={styles.publishModalSub}>
+              Preflight for <strong>{selectedExperience.title}</strong> — prototype checks before your build
+              goes live.
+            </p>
+            <ul className={styles.publishChecklist}>
+              {PUBLISH_CHECKS.map((label, i) => {
+                const done = i < publishCheckDone;
+                const active =
+                  publishChecksRunning && i === publishCheckDone && !publishChecksComplete;
+                return (
+                  <li
+                    key={label}
+                    className={`${styles.publishCheckRow} ${done ? styles.publishCheckRowDone : ''} ${active ? styles.publishCheckRowActive : ''}`}
+                  >
+                    {done ? (
+                      <CheckCircle2 size={18} className={styles.publishCheckIcon} aria-hidden />
+                    ) : active ? (
+                      <Loader2 size={18} className={styles.publishCheckSpin} aria-hidden />
+                    ) : (
+                      <span className={styles.publishCheckPending} aria-hidden />
+                    )}
+                    <span>{label}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className={styles.publishModalActions}>
+              <button type="button" className={styles.publishModalGhost} onClick={closePublishModal}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.publishModalPrimary}
+                disabled={!publishChecksComplete || publishSubmitting}
+                onClick={confirmPublish}
+              >
+                {publishSubmitting ? (
+                  <>
+                    <Loader2 size={16} className={styles.publishCheckSpin} aria-hidden />
+                    Publishing…
+                  </>
+                ) : (
+                  <>
+                    <Rocket size={16} aria-hidden />
+                    Publish
+                  </>
+                )}
+              </button>
+            </div>
+            {publishSubmitting ? (
+              <p className={styles.publishSuccess} role="status">
+                Pushed to production — returning you to Live…
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </div>
     </AgentShell>
   );

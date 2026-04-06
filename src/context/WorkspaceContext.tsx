@@ -62,7 +62,8 @@ const MOCK_EXPERIENCES: ExperienceSummary[] = [
     title: 'Neon District RPG',
     shortCode: 'NDR',
     stage: 'live',
-    thumb: 'https://placehold.co/96x96/1e1b4b/a5b4fc?text=N',
+    thumb:
+      'https://api.dicebear.com/9.x/pixel-art/png?seed=neonRPG&size=128&backgroundColor=b6e0fe',
     signal: 'Critical funnel dip · Sector B checkpoint',
     hasCriticalAlert: true,
     ccuLabel: '1.2k',
@@ -79,7 +80,8 @@ const MOCK_EXPERIENCES: ExperienceSummary[] = [
     title: 'The Great Escape Monkey Game',
     shortCode: 'MGM',
     stage: 'beta',
-    thumb: 'https://placehold.co/96x96/1a1b20/888?text=M',
+    thumb:
+      'https://api.dicebear.com/9.x/pixel-art/png?seed=monkeyGame&size=128&backgroundColor=d9f99d',
     signal: 'Stable · monetization experiments on',
     hasCriticalAlert: false,
     ccuLabel: '340',
@@ -93,7 +95,8 @@ const MOCK_EXPERIENCES: ExperienceSummary[] = [
     title: 'Zombie Siege 2025',
     shortCode: 'ZS',
     stage: 'experiment',
-    thumb: 'https://placehold.co/96x96/292524/fca5a5?text=Z',
+    thumb:
+      'https://api.dicebear.com/9.x/pixel-art/png?seed=zombieSiege&size=128&backgroundColor=fecaca',
     signal: 'A/B · spawn density (agent-owned)',
     hasCriticalAlert: false,
     ccuLabel: '89',
@@ -110,7 +113,8 @@ const MOCK_EXPERIENCES: ExperienceSummary[] = [
     title: 'Sky Islands',
     shortCode: 'SI',
     stage: 'live',
-    thumb: 'https://placehold.co/96x96/0c4a6e/7dd3fc?text=S',
+    thumb:
+      'https://api.dicebear.com/9.x/pixel-art/png?seed=skyIslands&size=128&backgroundColor=cffafe',
     signal: 'Green · retention +2.1% WoW',
     hasCriticalAlert: false,
     ccuLabel: '2.4k',

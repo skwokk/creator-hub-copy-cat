@@ -7,7 +7,6 @@ import ImageTranslationV3 from './components/translation/ImageTranslationV3';
 import HomeDashboard from './components/home/HomeDashboard';
 import ExperienceOverview from './components/experience/ExperienceOverview';
 import StudioPlatformPage from './components/studio/StudioPlatformPage';
-import NavigatorPartnerPage from './components/navigator/NavigatorPartnerPage';
 import ManageAnalyticsPage from './components/manage/ManageAnalyticsPage';
 import GameConfigStubPage from './components/game/GameConfigStubPage';
 
@@ -84,7 +83,7 @@ export default function App() {
           <Route path="/translate" element={<TranslationStringsView />} />
           <Route path="/translate-v3" element={<ImageTranslationV3 />} />
           <Route path="/studio" element={<StudioPlatformPage />} />
-          <Route path="/navigator" element={<NavigatorPartnerPage />} />
+          <Route path="/navigator" element={<Navigate to="/home#live-navigator" replace />} />
         </Routes>
       </WorkspaceProvider>
     </BrowserRouter>

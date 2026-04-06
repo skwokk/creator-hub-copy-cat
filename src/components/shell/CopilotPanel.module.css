@@ -294,6 +294,218 @@
   opacity: 0.85;
 }
 
+.inlineCode {
+  font-size: 0.92em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--os-edge);
+}
+
+.opsTyping {
+  font-size: 11px;
+  color: var(--content-muted);
+  font-style: italic;
+  padding: 2px 4px;
+}
+
+.opsFlowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.opsImplementBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0c0c0f;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  background: linear-gradient(120deg, #a78bfa, #22d3ee);
+}
+
+.opsImplementBtn:hover {
+  filter: brightness(1.06);
+}
+
+.opsThinking {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px dashed rgba(99, 102, 241, 0.35);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.opsThinkingLabel {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--os-aurora-mid);
+  margin-bottom: 8px;
+}
+
+.opsThinkingStep {
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--content-muted);
+  padding: 5px 0 5px 18px;
+  position: relative;
+  border-radius: 6px;
+  margin-bottom: 2px;
+}
+
+.opsThinkingStep::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--content-muted);
+  opacity: 0.35;
+}
+
+.opsThinkingActive {
+  color: var(--content-default);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.opsThinkingActive::before {
+  background: #22d3ee;
+  opacity: 1;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+.opsThinkingDone {
+  color: var(--content-muted);
+}
+
+.opsThinkingDone::before {
+  background: #4ade80;
+  opacity: 1;
+}
+
+.opsSolution {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  background: linear-gradient(145deg, rgba(34, 211, 238, 0.08), rgba(99, 102, 241, 0.06));
+}
+
+.opsSolutionTitle {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5eead4;
+  margin-bottom: 6px;
+}
+
+.opsSolutionBody {
+  margin: 0 0 10px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--content-default);
+}
+
+.opsContinueBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--content-emphasis);
+  border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  background: rgba(99, 102, 241, 0.12);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.opsContinueBtn:hover {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.opsChipWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 14px 10px;
+  flex-shrink: 0;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.opsChip {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--content-default);
+  background: var(--os-hover);
+  border: 1px solid var(--os-edge);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.opsChip:hover:not(:disabled) {
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.opsChip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.opsComposer {
+  margin: 0 14px 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--os-edge);
+  background: var(--os-surface-1);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opsTextarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--content-emphasis);
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  min-height: 44px;
+}
+
+.opsTextarea::placeholder {
+  color: var(--content-muted);
+}
+
+.opsComposerRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
 .fab {
   position: fixed;
   bottom: 24px;

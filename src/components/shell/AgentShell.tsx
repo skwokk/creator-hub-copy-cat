@@ -1,7 +1,7 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import type { LucideIcon } from 'lucide-react';
-import { Bell, Box, Layers, MessageSquare, Radio, Smartphone, Sparkles } from 'lucide-react';
+import { Bell, Box, Layers, Radio, Smartphone, Sparkles } from 'lucide-react';
 import { GAME_CONFIG_SUB_NAV } from '../../config/gameConfigNav';
 import { STAGE_LABEL, useWorkspace } from '../../context/WorkspaceContext';
 import CopilotPanel, { type CopilotMode } from './CopilotPanel';
@@ -11,7 +11,7 @@ import styles from './AgentShell.module.css';
 import avatarImg from '../../assets/avatar.png';
 import tiltSvg from '../../assets/tilt.svg';
 
-export type ShellSection = 'live' | 'manage' | 'build' | 'navigator';
+export type ShellSection = 'live' | 'manage' | 'build';
 
 const MAIN_TABS: {
   id: ShellSection;
@@ -22,21 +22,12 @@ const MAIN_TABS: {
   Icon: LucideIcon;
 }[] = [
   {
-    id: 'navigator',
-    label: 'Navigator chat',
-    shortLabel: 'Chat',
-    path: '/navigator',
-    hint:
-      'Full-page conversation with Navigator. Different from the sparkles control, which opens the side panel next to your work.',
-    Icon: MessageSquare,
-  },
-  {
     id: 'live',
     label: 'Live ops',
     shortLabel: 'Live',
     path: '/home',
     hint:
-      'Real-time monitoring: Pulse, incidents, funnel — what is happening to players right now (not content shipping)',
+      'Pulse dashboard, Navigator chat, and live signals for the focused title — plus the sparkles side panel on every tab.',
     Icon: Radio,
   },
   {
@@ -59,7 +50,6 @@ const MAIN_TABS: {
 ];
 
 function sectionFromPath(pathname: string): ShellSection {
-  if (pathname.startsWith('/navigator')) return 'navigator';
   if (pathname.startsWith('/studio')) return 'build';
   if (
     pathname.startsWith('/experience/') ||
@@ -74,7 +64,6 @@ function sectionFromPath(pathname: string): ShellSection {
 }
 
 function copilotFromPath(pathname: string): CopilotMode {
-  if (pathname.startsWith('/navigator')) return 'ops';
   if (pathname.startsWith('/studio')) return 'build';
   if (
     pathname.startsWith('/localization') ||
@@ -100,6 +89,8 @@ interface AgentShellProps {
   showCopilot?: boolean;
   /** Override Navigator panel mode (defaults from current route) */
   copilotMode?: CopilotMode;
+  /** Studio: show continuation thread after Live Navigator “Continue to Build” demo */
+  copilotDemoBuild?: boolean;
 }
 
 export default function AgentShell({
@@ -108,6 +99,7 @@ export default function AgentShell({
   barTitle,
   showCopilot = true,
   copilotMode: copilotModeProp,
+  copilotDemoBuild = false,
 }: AgentShellProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -128,14 +120,19 @@ export default function AgentShell({
 
   const showGameSubRail = activeSection === 'manage';
 
-  const isPartnerPage = pathname.startsWith('/navigator');
-  const showCopilotPanel = showCopilot && !isPartnerPage;
+  const showCopilotPanel = showCopilot;
 
   const shellCopilotClass = showCopilotPanel
     ? copilotOpen
       ? styles.shellCopilotOpen
       : styles.shellCopilotDocked
     : '';
+
+  useEffect(() => {
+    const open = () => setCopilotOpen(true);
+    window.addEventListener('creator-os:open-copilot', open);
+    return () => window.removeEventListener('creator-os:open-copilot', open);
+  }, []);
 
   return (
     <div className={`${styles.shell} ${shellClass} ${shellCopilotClass}`}>
@@ -180,8 +177,8 @@ export default function AgentShell({
               className={`${styles.iconBtn} ${styles.partnerBtn}`}
               onClick={() => setCopilotOpen((o) => !o)}
               aria-expanded={copilotOpen}
-              aria-label="Toggle AI partner side panel"
-              title="Side panel: your AI partner alongside your work"
+              aria-label="Toggle Navigator side panel"
+              title="Side panel: Navigator alongside your work"
             >
               <Sparkles size={17} />
             </button>
@@ -272,6 +269,7 @@ export default function AgentShell({
             open={copilotOpen}
             onToggle={() => setCopilotOpen((o) => !o)}
             workspaceLine={workspaceLine}
+            demoBuildCollaboration={copilotDemoBuild}
           />
         </div>
       )}

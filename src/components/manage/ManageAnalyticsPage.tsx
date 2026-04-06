@@ -33,7 +33,7 @@ export default function ManageAnalyticsPage() {
               an experiment — especially alongside Lexicon and Vision under <strong>Setup</strong>.
             </p>
           </div>
-          <button type="button" className={styles.navBtn} onClick={() => navigate('/navigator')}>
+          <button type="button" className={styles.navBtn} onClick={() => navigate('/home#live-navigator')}>
             <Sparkles size={16} aria-hidden />
             Ask Navigator
           </button>
